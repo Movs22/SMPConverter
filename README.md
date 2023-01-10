@@ -5,10 +5,10 @@ This repo was made to convert inventories from Arcoda's [SCSwap](https://github.
 Overwrite the [inventory.yml](/inventory.yml) found in the root of this repo with the contents of your inventory.yml and run either the [python](/index.py) or [javascript](/index.js) file.
 
 # Converting with Python
-Simply run the python file and the converted file will show up in [inventory-new.yml](inventory-new.yml).
+<b>Before running,</b> make sure you have [yaml](https://pyyaml.org/) installed. If so, run the python file and the converted file will show up in [inventory-new.yml](inventory-new.yml).
 
 # Converting with Javascript
-<b>Before running,</b> make sure that you have fs installed (use `npm install fs` to install it).
+<b>Before running,</b> make sure that you have fs and js-yaml installed (use `npm install fs js-yaml` to install it).
 After running index.js, the converted file will show up in [inventory-new.yml](inventory-new.yml).
 
 # Extra information
