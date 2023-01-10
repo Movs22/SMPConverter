@@ -30,11 +30,16 @@ def convert(inv, a, uuid):
 
 for k in inv:
     d = inv[k]
-    print(d)
-    d["Survival"]["Inventory"] = "4†e†" + convert(( d["Survival"]["Inventory"].split("4†e†")[1]), "Inventory", k )
-    d["Survival"]["Armor"] = "4†e†" + convert(( d["Survival"]["Armor"].split("4†e†")[1]), "Armor", k )
-    if(d["Survival"]["EnderChest"]):
-        d["Survival"]["EnderChest"] = "3†e†" + convert(( d["Survival"]["EnderChest"].split("3†e†")[1]), "EnderChest", k )
+    if(d):
+        if(d["Survival"]):
+            d["Survival"]["Inventory"] = "4†e†" + convert(( d["Survival"]["Inventory"].split("4†e†")[1]), "Inventory", k )
+            d["Survival"]["Armor"] = "4†e†" + convert(( d["Survival"]["Armor"].split("4†e†")[1]), "Armor", k )
+            if(d["Survival"]["EnderChest"]):
+                d["Survival"]["EnderChest"] = "3†e†" + convert(( d["Survival"]["EnderChest"].split("3†e†")[1]), "EnderChest", k )
+        else:
+            print("Skipping " + k)
+    else:
+        print("Skipping " + k)
 
 f.write(dump(inv))
 f.close()
