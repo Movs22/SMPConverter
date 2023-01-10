@@ -17,7 +17,6 @@ function convert(inv, i, uuid) {
     for(let i = 0; i < pinv.length; i++) {
         rinv = pinv[i].split("@")
         if(rinv[1]) {
-            console.log(rinv)
             rinv2 = rinv2 + "@w•" + rinv[1].split("•")[1] + "@m•" + ids["i" + rinv[2].split("•")[1] + "d"] + (rinv.slice(2, rinv.length)).join("@") + "†"
         }
     }
@@ -27,11 +26,20 @@ function convert(inv, i, uuid) {
 
 Object.keys(data).forEach(function(k){
     let d = data[k]
-    d.Survival.Inventory = "4†e†" + convert(( d.Survival.Inventory.split("4†e†")[1]), "Inventory", k )
-    d.Survival.Armor = "4†e†" + convert(( d.Survival.Armor.split("4†e†")[1]), "Armor", k )
-    if(d.Survival.EnderChest) {
-        d.Survival.EnderChest = "3†e†" + convert(( d.Survival.EnderChest.split("3†e†")[1]), "EnderChest", k )
-    } 
+    if(d) {
+    if(d.Survival) {
+        d.Survival.Inventory = "4†e†" + convert(( d.Survival.Inventory.split("4†e†")[1]), "Inventory", k )
+        d.Survival.Armor = "4†e†" + convert(( d.Survival.Armor.split("4†e†")[1]), "Armor", k )
+        if(d.Survival.EnderChest) {
+            d.Survival.EnderChest = "3†e†" + convert(( d.Survival.EnderChest.split("3†e†")[1]), "EnderChest", k )
+        } 
+    } else {
+        console.log("Skipping " + k)
+    }
+} else {
+    console.log("Skipping " + k)
+}
+
 });
 fs.writeFileSync(__dirname + "/inventory-new.yml", yaml.dump(data, {lineWidth: -1}), 'utf8')
 console.log("Converted data of " + Object.keys(data).length + " players.")
