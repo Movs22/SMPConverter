@@ -5,52 +5,37 @@
 
 import json
 import math
+from yaml import load, dump
+from yaml import Loader, Dumper
+
 
 ids = json.load(open("ids.json"))
 invf = open("inventory.yml")
-inv = invf.read()
+inv = load(invf.read(), Loader=Loader)
 invf.close()
-invf = open("inventory-new.yml",'a+')
-inv = inv.split("\n")
-for i in range(math.floor(len(inv)/17)):
-    if("Survival:" in inv[(i*17)+1]):
-        pinv = inv[(i*17)+3].split("Inventory: 4†e†")[1] #player inv
-        einv = inv[(i*17)+7].split("EnderChest: 3†e†")[1] #echest
-        ainv = inv[(i*17)+4].split("Armor: 4†e†")[1] #armor
-        pinv = pinv.split("†")
-        pinv2 = ""
+f = open("inventory-new.yml",'a+')
 
-        #goes to all item ids and converts from a 1.19.2 id to a 1.19.3 id (check /files/[version]/X_X.yml)
-        for b in range(len(pinv)):
-            pinva = pinv[b].split("@")
-            if(len(pinva) > 1):
-                pinv2 = pinv2 + "@w•" +  str(pinva[1].split("•")[1]) + "@m•" + str(ids["i" + pinva[2].split("•")[1] + "d"]) + "@".join(pinva[2:len(pinva)]) + "†"
-        print("Converted inventory of " + inv[(i*17)] + " (" + str(len(pinv) - 1) + " items)")
-        einv = einv.split("†")
-        einv2 = ""
-        for a in range(len(einv)):
-            einva = einv[a].split("@")
-            if(len(einva) > 1):
-                einv2 = einv2 + "@w•" + str(einva[1].split("•")[1]) + "@m•" + ids["i" + str(einva[2].split("•")[1]) + "d"] + "@".join(einva[2:len(einva)]) + "†"
+def convert(inv, a, uuid):
+    if not inv: 
+        return ""
+    pinv = inv.split("†")
+    rinv = ""
+    rinv2 = ""
+    for i in range(len(pinv) - 1):
+        rinv = pinv[i].split("@")
+        if(rinv[1]):
+            rinv2 = rinv2 + "@w•" + rinv[1].split("•")[1] + "@m•" + str( ids["i" + rinv[2].split("•")[1] + "d"]  )+ "@".join(rinv[2:len(rinv)]) + "†"
+    print("Converted data " + a + " of " + uuid + " (" + str(len(pinv) - 1) + " items)")
+    return rinv2
 
-        print("Converted echest inventory of " + inv[(i*17)] + " (" + str(len(einv) - 1) + " items)")
-        ainv = ainv.split("†")
-        ainv2 = ""
-        for c in range(len(ainv)):
-            ainva = ainv[c].split("@")
-            if(len(ainva) > 1):
-                ainv2 = ainv2 + "@w•" + str(ainva[1].split("•")[1]) + "@m•" + str(ids["i" + str(ainva[2].split("•")[1]) + "d"]) + "@".join(ainva[2:len(ainva)]) + "†"
+for k in inv:
+    d = inv[k]
+    print(d)
+    d["Survival"]["Inventory"] = "4†e†" + convert(( d["Survival"]["Inventory"].split("4†e†")[1]), "Inventory", k )
+    d["Survival"]["Armor"] = "4†e†" + convert(( d["Survival"]["Armor"].split("4†e†")[1]), "Armor", k )
+    if(d["Survival"]["EnderChest"]):
+        d["Survival"]["EnderChest"] = "3†e†" + convert(( d["Survival"]["EnderChest"].split("3†e†")[1]), "EnderChest", k )
 
-        print("Converted armor inventory of " + inv[(i*17)] + " (" + str(len(ainv) - 1) + " items)")
-        inv[(i*17)+3] = inv[(i*17)+3].replace("†".join(pinv), pinv2)
-        inv[(i*17)+4] = inv[(i*17)+4].replace("†".join(ainv), ainv2)
-        inv[(i*17)+7] = inv[(i*17)+7].replace("†".join(einv), einv2)
-        print("Saved new inventories of " + inv[(i*17)])
-        print("==========================")
-    else:
-        if(inv[i+16]):
-            print("Failed to convert inventory of: " + inv[(i*17)])
-
-invf.write("\n".join(inv))
-invf.close()
-print("Converted data of " + str(math.floor(len(inv)/17)) + " players.")
+f.write(dump(inv))
+f.close()
+print("Converted data of " + str(len(inv)) + " players.")
