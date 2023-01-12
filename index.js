@@ -32,6 +32,7 @@ Object.keys(data).forEach(function(k){
     if(d["Survival"]) {
         d.Survival.Inventory ? d.Survival.Inventory = "4†e†" + convert(( d.Survival.Inventory.split("4†e†")[1]), "Inventory", k ) : null
         d.Survival.Armor ? d.Survival.Armor = "4†e†" + convert(( d.Survival.Armor.split("4†e†")[1]), "Armor", k ) : null
+        d.Survival.OffHand ? d.Survival.OffHand = "'" + convert(( d.Survival.OffHand.split("4†e†")[1]), "Armor", k ) + "'" : null 
         if(d.Survival.EnderChest) {
             d.Survival.EnderChest = "3†e†" + convert(( d.Survival.EnderChest.split("3†e†")[1]), "EnderChest", k )
         } 
