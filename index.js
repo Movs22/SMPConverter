@@ -17,8 +17,9 @@ function convert(inv, i, uuid) {
     for(let i = 0; i < pinv.length; i++) {
         rinv = pinv[i].split("@")
         if(rinv[1]) {
+            console.log((rinv.slice(2, rinv.length)).join("@"))
             console.log(rinv)
-            rinv2 = rinv2 + "@w•" + rinv[1].split("•")[1] + "@m•" + ids["i" + rinv[2].split("•")[1] + "d"] + (rinv.slice(2, rinv.length)).join("@") + "†"
+            rinv2 = rinv2 + "@w•" + rinv[1].split("•")[1] + "@m•" + ids["i" + rinv[2].split("•")[1] + "d"] + "@" + (rinv.slice(3, rinv.length)).join("@") + "†"
         }
     }
     console.log("Converted data " + i + " of " + uuid + " (" + (pinv.length - 1) + " items)")
@@ -28,7 +29,7 @@ function convert(inv, i, uuid) {
 Object.keys(data).forEach(function(k){
     let d = data[k]
     if(d) {
-    if(d.Survival) {
+    if(d["Survival"]) {
         d.Survival.Inventory ? d.Survival.Inventory = "4†e†" + convert(( d.Survival.Inventory.split("4†e†")[1]), "Inventory", k ) : null
         d.Survival.Armor ? d.Survival.Armor = "4†e†" + convert(( d.Survival.Armor.split("4†e†")[1]), "Armor", k ) : null
         if(d.Survival.EnderChest) {
